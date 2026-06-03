@@ -171,6 +171,62 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
+
+    .choice-btns {
+      display: none;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .choice-btns.visible {
+      display: flex;
+    }
+
+    .choice-btn {
+      background: none;
+      border: 1px solid rgba(220, 120, 120, 0.35);
+      color: rgba(245, 230, 211, 0.7);
+      font-family: 'Georgia', serif;
+      font-size: 0.95rem;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.03em;
+    }
+
+    .choice-btn:hover {
+      border-color: rgba(220, 120, 120, 0.8);
+      color: #f5e6d3;
+    }
+
+    .choice-btn.active {
+      border-color: #dc7878;
+      color: #f5e6d3;
+      background: rgba(220, 120, 120, 0.15);
+    }
+
+    .carta-nome {
+      font-style: italic;
+      font-size: 1.3rem;
+      color: rgba(220, 120, 120, 0.85);
+      margin-bottom: 1.5rem !important;
+    }
+
+    .assinatura-j {
+      margin-top: 1.5rem;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: rgba(220, 120, 120, 0.85);
+      text-align: right;
+    }
+
+    .carta-img {
+      width: 100%;
+      border-radius: 12px;
+      opacity: 0.92;
+    }
   </style>
 </head>
 <body>
@@ -180,57 +236,56 @@
 
   <div class="content">
     <div class="heart-title">❤️</div>
-    <p class="subtitle">O que é o amor?</p>
+    <p class="subtitle">Para você</p>
 
     <button id="music-btn" onclick="toggleMusic()">
       <span class="btn-icon">🎵</span>
       <span id="btn-text">Tocar Música</span>
     </button>
 
+    <div class="choice-btns" id="choice-btns">
+      <button class="choice-btn active" onclick="showLetter(0, this)">O que é o amor?</button>
+      <button class="choice-btn" onclick="showLetter(1, this)">Paixão</button>
+    </div>
+
     <div class="letter" id="letter">
-      <p>Um dia você está em um ambiente e algo te incomoda. Te deixa desconfortável, mas de um jeito gostoso. Você começa a arranjar desculpas para estar lá e percebe que o seu dia já não é o mesmo quando não segue esse roteiro.</p>
 
-      <p>Algo acontece, mas você não percebe.</p>
+      <!-- CARTA 1 -->
+      <div class="letter-content" id="carta-0">
+        <p>Um dia você está em um ambiente e algo te incomoda. Te deixa desconfortável, mas de um jeito gostoso. Você começa a arranjar desculpas para estar lá e percebe que o seu dia já não é o mesmo quando não segue esse roteiro.</p>
+        <p>Algo acontece, mas você não percebe.</p>
+        <p>Os dias passam e a sintonia aumenta. De repente, um simples meme desencadeia uma onda de desejo e loucura. No início parece apenas uma fase passageira, um momento. Mas aquilo se transforma em cumplicidade, amizade e um fogo que, por vezes, parece quase incontrolável.</p>
+        <p>É verdade que desencontros aconteceram. Uma breve ruptura pareceu durar uma eternidade. Os dias transcorrem, mas talvez o que existe entre nós já venha de muito antes. Coisas assim não acontecem ao acaso. Almas se encontram... e, às vezes, se reencontram.</p>
+        <p>E quando isso acontece, tudo parece voltar com ainda mais força: proteção, carinho, cumplicidade.</p>
+        <p>Mas o que isso quer dizer?</p>
+        <p>Uma amizade forte?<br>Um gostar intenso?<br>Um desejo constante de estar junto em todos os momentos?</p>
+        <p>Eu gosto de pensar que o que temos é uma partilha. Compartilhamos alegrias, desejos, vontades, angústias e tristezas. Até nossas histórias possuem semelhanças que às vezes parecem coincidências impossíveis.</p>
+        <p>Mas, ainda assim, o que isso significa?</p>
+        <p>Percebi que, antes de fazer algo, penso na sua aprovação. Incluo você nos meus projetos. Tento tornar a sua jornada mais leve. Percebi que me preocupo quando terminamos de conversar e não sei se você chegou bem. Penso no que posso fazer para te proteger.</p>
+        <p>Ao mesmo tempo, me preocupo em não ser invasivo, em não ultrapassar limites. Talvez eu seja intenso e apaixonado demais. E sei que corro o risco de que a reciprocidade não seja exatamente a mesma.</p>
+        <p>Durante muito tempo acreditei que nunca encontraria alguém com pensamentos tão parecidos com os meus.</p>
+        <p>Mas encontrei você.</p>
+        <p>Você conhece meus segredos mais profundos. É a pessoa com quem dou risada por causa do seu humor rápido e ácido. É alguém cuja inteligência admiro profundamente. Vejo em você um ser humano capaz de realizar coisas incríveis, alguém que, aos poucos, tento ajudar a enxergar toda a sua própria força.</p>
+        <p>Espero estar à altura de acompanhar você nesta vida louca que vivemos, ajudando no que for necessário para seguirmos em frente.</p>
+        <p>Ah... e sobre a pergunta do início...</p>
+        <p><em>O que é o amor?</em></p>
+        <p>Eu não sei responder.</p>
+        <p>Mas sei que qualquer definição que exista não chega nem perto do que eu sinto por você.</p>
+      </div>
 
-      <p>Os dias passam e a sintonia aumenta. De repente, um simples meme desencadeia uma onda de desejo e loucura. No início parece apenas uma fase passageira, um momento. Mas aquilo se transforma em cumplicidade, amizade e um fogo que, por vezes, parece quase incontrolável.</p>
-
-      <p>É verdade que desencontros aconteceram. Uma breve ruptura pareceu durar uma eternidade. Os dias transcorrem, mas talvez o que existe entre nós já venha de muito antes. Coisas assim não acontecem ao acaso. Almas se encontram... e, às vezes, se reencontram.</p>
-
-      <p>E quando isso acontece, tudo parece voltar com ainda mais força: proteção, carinho, cumplicidade.</p>
-
-      <p>Mas o que isso quer dizer?</p>
-
-      <p>Uma amizade forte?<br>Um gostar intenso?<br>Um desejo constante de estar junto em todos os momentos?</p>
-
-      <p>Eu gosto de pensar que o que temos é uma partilha. Compartilhamos alegrias, desejos, vontades, angústias e tristezas. Até nossas histórias possuem semelhanças que às vezes parecem coincidências impossíveis.</p>
-
-      <p>Mas, ainda assim, o que isso significa?</p>
-
-      <p>Percebi que, antes de fazer algo, penso na sua aprovação. Incluo você nos meus projetos. Tento tornar a sua jornada mais leve. Percebi que me preocupo quando terminamos de conversar e não sei se você chegou bem. Penso no que posso fazer para te proteger.</p>
-
-      <p>Ao mesmo tempo, me preocupo em não ser invasivo, em não ultrapassar limites. Talvez eu seja intenso e apaixonado demais. E sei que corro o risco de que a reciprocidade não seja exatamente a mesma.</p>
-
-      <p>Durante muito tempo acreditei que nunca encontraria alguém com pensamentos tão parecidos com os meus.</p>
-
-      <p>Mas encontrei você.</p>
-
-      <p>Você conhece meus segredos mais profundos. É a pessoa com quem dou risada por causa do seu humor rápido e ácido. É alguém cuja inteligência admiro profundamente. Vejo em você um ser humano capaz de realizar coisas incríveis, alguém que, aos poucos, tento ajudar a enxergar toda a sua própria força.</p>
-
-      <p>Espero estar à altura de acompanhar você nesta vida louca que vivemos, ajudando no que for necessário para seguirmos em frente.</p>
-
-      <p>Ah... e sobre a pergunta do início...</p>
-
-      <p><em>O que é o amor?</em></p>
-
-      <p>Eu não sei responder.</p>
-
-      <p>Mas sei que qualquer definição que exista não chega nem perto do que eu sinto por você.</p>
+      <!-- CARTA 2 -->
+      <div class="letter-content" id="carta-1" style="display:none">
+        <img src="photo_2026-06-02_23-41-14.jpg" alt="Paixão" class="carta-img" />
+      </div>
 
     </div>
   </div>
 
-  <audio id="audio" loop>
+  <audio id="audio1" loop>
     <source src="Dashdot Maxximal Ashibah - Make It Better Pseudo Video ft. Ashib.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="audio2" loop>
+    <source src="Goo Goo Dolls Iris Official Music Video 4K Remaster.mp3" type="audio/mpeg" />
   </audio>
 
   <script>
@@ -247,22 +302,29 @@
       container.appendChild(p);
     }
 
-    const audio   = document.getElementById('audio');
+    const audios  = [document.getElementById('audio1'), document.getElementById('audio2')];
     const btn     = document.getElementById('music-btn');
     const btnText = document.getElementById('btn-text');
     const letter  = document.getElementById('letter');
+    const choiceBtns = document.getElementById('choice-btns');
 
     let started = false;
+    let currentIndex = 0;
+
+    function currentAudio() { return audios[currentIndex]; }
 
     function toggleMusic() {
+      const audio = currentAudio();
       if (audio.paused) {
         audio.play().then(() => {
           btn.classList.add('playing');
           btnText.textContent = 'Pausar';
-
           if (!started) {
             started = true;
-            setTimeout(() => letter.classList.add('visible'), 400);
+            setTimeout(() => {
+              letter.classList.add('visible');
+              choiceBtns.classList.add('visible');
+            }, 400);
           }
         }).catch(() => {
           btnText.textContent = 'Tente novamente';
@@ -271,6 +333,22 @@
         audio.pause();
         btn.classList.remove('playing');
         btnText.textContent = 'Tocar Música';
+      }
+    }
+
+    function showLetter(index, el) {
+      const wasPlaying = !currentAudio().paused;
+
+      audios.forEach(a => { a.pause(); a.currentTime = 0; });
+      currentIndex = index;
+
+      document.querySelectorAll('.letter-content').forEach(c => c.style.display = 'none');
+      document.getElementById('carta-' + index).style.display = 'block';
+      document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+
+      if (wasPlaying) {
+        currentAudio().play().catch(() => {});
       }
     }
   </script>
