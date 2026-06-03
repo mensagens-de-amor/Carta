@@ -173,14 +173,10 @@
     }
 
     .choice-btns {
-      display: none;
+      display: flex;
       gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
-    }
-
-    .choice-btns.visible {
-      display: flex;
     }
 
     .choice-btn {
@@ -238,15 +234,15 @@
     <div class="heart-title">❤️</div>
     <p class="subtitle">Para você</p>
 
-    <button id="music-btn" onclick="toggleMusic()">
-      <span class="btn-icon">🎵</span>
-      <span id="btn-text">Tocar Música</span>
-    </button>
-
     <div class="choice-btns" id="choice-btns">
-      <button class="choice-btn active" onclick="showLetter(0, this)">O que é o amor?</button>
+      <button class="choice-btn" onclick="showLetter(0, this)">O que é o amor?</button>
       <button class="choice-btn" onclick="showLetter(1, this)">Paixão</button>
     </div>
+
+    <button id="music-btn" onclick="toggleMusic()" style="display:none">
+      <span class="btn-icon">🎵</span>
+      <span id="btn-text">Pausar</span>
+    </button>
 
     <div class="letter" id="letter">
 
@@ -306,39 +302,27 @@
     const btn     = document.getElementById('music-btn');
     const btnText = document.getElementById('btn-text');
     const letter  = document.getElementById('letter');
-    const choiceBtns = document.getElementById('choice-btns');
 
-    let started = false;
-    let currentIndex = 0;
+    let currentIndex = -1;
 
     function currentAudio() { return audios[currentIndex]; }
 
     function toggleMusic() {
       const audio = currentAudio();
+      if (!audio) return;
       if (audio.paused) {
         audio.play().then(() => {
           btn.classList.add('playing');
           btnText.textContent = 'Pausar';
-          if (!started) {
-            started = true;
-            setTimeout(() => {
-              letter.classList.add('visible');
-              choiceBtns.classList.add('visible');
-            }, 400);
-          }
-        }).catch(() => {
-          btnText.textContent = 'Tente novamente';
-        });
+        }).catch(() => {});
       } else {
         audio.pause();
         btn.classList.remove('playing');
-        btnText.textContent = 'Tocar Música';
+        btnText.textContent = 'Tocar';
       }
     }
 
     function showLetter(index, el) {
-      const wasPlaying = !currentAudio().paused;
-
       audios.forEach(a => { a.pause(); a.currentTime = 0; });
       currentIndex = index;
 
@@ -347,9 +331,18 @@
       document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active'));
       el.classList.add('active');
 
-      if (wasPlaying) {
-        currentAudio().play().catch(() => {});
+      if (!letter.classList.contains('visible')) {
+        letter.classList.add('visible');
       }
+
+      btn.style.display = 'flex';
+      btn.classList.add('playing');
+      btnText.textContent = 'Pausar';
+
+      currentAudio().play().catch(() => {
+        btn.classList.remove('playing');
+        btnText.textContent = 'Tocar';
+      });
     }
   </script>
 </body>
