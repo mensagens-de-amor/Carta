@@ -111,6 +111,31 @@
     }
 
     /* Botão de música */
+    .btn-rapidinhas {
+      background: linear-gradient(135deg, rgba(180,80,80,0.25), rgba(100,60,100,0.3));
+      border: 1.5px solid rgba(220, 120, 120, 0.7);
+      color: #f5e6d3;
+      font-family: 'Georgia', serif;
+      font-size: 1.05rem;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.05em;
+      box-shadow: 0 0 18px rgba(220, 120, 120, 0.15);
+    }
+
+    .btn-rapidinhas:hover {
+      background: linear-gradient(135deg, rgba(180,80,80,0.4), rgba(100,60,100,0.45));
+      box-shadow: 0 0 25px rgba(220, 120, 120, 0.3);
+      transform: scale(1.03);
+    }
+
+    .btn-rapidinhas.active {
+      border-color: #dc7878;
+      box-shadow: 0 0 30px rgba(220, 120, 120, 0.4);
+    }
+
     #music-btn {
       display: none;
       background: none;
@@ -177,6 +202,7 @@
       border-radius: 12px;
       opacity: 0.92;
     }
+
 
     /* ── Pensamentos ── */
     .pensamentos-box {
@@ -282,6 +308,7 @@
     <div class="heart-title">❤️</div>
     <p class="subtitle">Para você</p>
 
+    <div id="btn-rapidinhas-wrap"></div>
     <div class="choice-btns" id="choice-btns"></div>
 
     <button id="music-btn" onclick="toggleMusic()">
@@ -388,7 +415,8 @@
   const PLAYLIST = [
     "Dashdot Maxximal Ashibah - Make It Better Pseudo Video ft. Ashib.mp3",
     "Goo Goo Dolls Iris Official Music Video 4K Remaster.mp3",
-    "Chris de burgh - lady in red HQ.mp3"
+    "Chris de burgh - lady in red HQ.mp3",
+    "Radiohead - Fake Plastic Trees.mp3"
   ];
 
   // =======================================================
@@ -406,6 +434,13 @@
     const btnNext     = document.getElementById('btn-next');
 
     const audios = CARTAS.map(c => { const a = new Audio(c.musica); a.loop = true; return a; });
+
+    // Rapidinhas: primeiro as músicas que não estão nas cartas, depois as outras
+    const musicasCartas = CARTAS.map(c => c.musica);
+    const playlistRapidas = [
+      ...PLAYLIST.filter(m => !musicasCartas.includes(m)),
+      ...PLAYLIST.filter(m => musicasCartas.includes(m))
+    ];
 
     // Playlist embaralhada para pensamentos
     function embaralhar(arr) {
@@ -457,12 +492,12 @@
       choiceBtns.appendChild(btn);
     });
 
-    // Botão pensamentos
+    // Botão Rapidinhas — em destaque, separado acima das cartas
     const btnPens = document.createElement('button');
-    btnPens.className = 'choice-btn';
+    btnPens.className = 'btn-rapidinhas';
     btnPens.textContent = '💌 Rapidinhas do Caixeiro';
     btnPens.onclick = () => abrirPensamentos(btnPens);
-    choiceBtns.appendChild(btnPens);
+    document.getElementById('btn-rapidinhas-wrap').appendChild(btnPens);
 
     function pararTudo() {
       audios.forEach(a => { a.pause(); a.currentTime = 0; });
@@ -472,7 +507,7 @@
       pensBox.style.display = 'none';
       pensBox.classList.remove('visible');
       musicBtn.style.display = 'none';
-      document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.choice-btn, .btn-rapidinhas').forEach(b => b.classList.remove('active'));
     }
 
     function abrirCarta(index, btnEl) {
@@ -516,7 +551,7 @@
       musicBtn.style.display = 'flex';
       musicBtn.classList.add('playing');
       btnText.textContent = 'Pausar';
-      playlistAtual = embaralhar(PLAYLIST);
+      playlistAtual = embaralhar(playlistRapidas);
       playlistIndex = Math.floor(Math.random() * playlistAtual.length);
       audioP = new Audio(playlistAtual[playlistIndex]);
       audioP.addEventListener('ended', proximaMusica);
