@@ -187,6 +187,28 @@
       box-shadow: 0 0 30px rgba(220, 120, 120, 0.4);
     }
 
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #dc7878;
+      color: white;
+      font-family: sans-serif;
+      font-size: 0.7rem;
+      font-weight: bold;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      animation: pulse-badge 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.2); }
+    }
+
     #music-btn {
       display: none;
       background: none;
@@ -618,11 +640,21 @@
       choiceBtns.appendChild(btn);
     });
 
-    // Botão Rapidinhas — em destaque, separado acima das cartas
+    // Botão Rapidinhas com contador de novas
+    const totalRapidas = PENSAMENTOS.textos.length;
+    const vistasAntes  = parseInt(localStorage.getItem('rapidinhas_vistas') || '0');
+    const novas        = Math.max(0, totalRapidas - vistasAntes);
+
     const btnPens = document.createElement('button');
     btnPens.className = 'btn-rapidinhas';
-    btnPens.textContent = '💌 Rapidinhas do Caixeiro';
-    btnPens.onclick = () => abrirPensamentos(btnPens);
+    btnPens.innerHTML = '💌 Rapidinhas do Caixeiro' +
+      (novas > 0 ? `<span class="badge">${novas}</span>` : '');
+    btnPens.onclick = () => {
+      abrirPensamentos(btnPens);
+      localStorage.setItem('rapidinhas_vistas', totalRapidas);
+      const badge = btnPens.querySelector('.badge');
+      if (badge) badge.remove();
+    };
     document.getElementById('btn-rapidinhas-wrap').appendChild(btnPens);
 
     function pararTudo() {
