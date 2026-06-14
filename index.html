@@ -7,6 +7,57 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* Tela de entrada */
+    #entrada {
+      position: fixed;
+      inset: 0;
+      background: #0a0a0a;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      transition: opacity 0.8s ease;
+    }
+
+    #entrada.saindo {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .entrada-coracao {
+      font-size: 3.5rem;
+      animation: heartbeat 1.8s ease-in-out infinite;
+    }
+
+    .entrada-texto {
+      text-align: center;
+      font-size: 1.1rem;
+      color: rgba(245, 230, 211, 0.6);
+      letter-spacing: 0.08em;
+      line-height: 1.8;
+    }
+
+    .entrada-btn {
+      background: none;
+      border: 1.5px solid rgba(220, 120, 120, 0.6);
+      color: #f5e6d3;
+      font-family: 'Georgia', serif;
+      font-size: 1.05rem;
+      padding: 0.9rem 2.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      animation: pulse-border 2s ease-in-out infinite;
+    }
+
+    .entrada-btn:hover {
+      background: rgba(220, 120, 120, 0.15);
+      border-color: #dc7878;
+    }
+
     body {
       min-height: 100vh;
       background: #0a0a0a;
@@ -312,6 +363,13 @@
 </head>
 <body>
 
+  <!-- Tela de entrada -->
+  <div id="entrada">
+    <div class="entrada-coracao">❤️</div>
+    <p class="entrada-texto">Tem uma mensagem<br>esperando por você</p>
+    <button class="entrada-btn" onclick="entrar()">Abrir ❤️</button>
+  </div>
+
   <div class="particles" id="particles"></div>
 
   <div class="content">
@@ -465,6 +523,21 @@
     const pensData    = document.getElementById('pensamento-data');
     const pensCounter = document.getElementById('pensamento-counter');
 
+    const audioIntro = new Audio("Billy Paul - Me and Mrs. Jones Official Audio.mp3");
+    audioIntro.loop = true;
+
+    function entrar() {
+      const entrada = document.getElementById('entrada');
+      entrada.classList.add('saindo');
+      setTimeout(() => entrada.style.display = 'none', 800);
+      audioIntro.play().catch(() => {});
+    }
+
+    function pararIntro() {
+      audioIntro.pause();
+      audioIntro.currentTime = 0;
+    }
+
     // Ordena do mais recente para o mais antigo
     PENSAMENTOS.textos.sort((a, b) => new Date(b.data) - new Date(a.data));
 
@@ -553,6 +626,7 @@
     document.getElementById('btn-rapidinhas-wrap').appendChild(btnPens);
 
     function pararTudo() {
+      pararIntro();
       audios.forEach(a => { a.pause(); a.currentTime = 0; });
       audioP.pause(); audioP.currentTime = 0;
       letter.style.display = 'none';
