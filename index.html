@@ -291,6 +291,16 @@
       cursor: default;
     }
 
+    .pensamento-data {
+      position: absolute;
+      bottom: 0.8rem;
+      right: 1.2rem;
+      font-size: 0.75rem;
+      color: rgba(220, 120, 120, 0.5);
+      font-style: italic;
+      letter-spacing: 0.05em;
+    }
+
     .pensamento-counter {
       font-size: 0.85rem;
       color: rgba(245, 230, 211, 0.35);
@@ -321,6 +331,7 @@
     <div class="pensamentos-box" id="pensamentos-box">
       <div class="pensamento-card">
         <p class="pensamento-texto" id="pensamento-texto"></p>
+        <span class="pensamento-data" id="pensamento-data"></span>
       </div>
       <div class="pensamento-nav">
         <button class="nav-btn" id="btn-prev" onclick="navegarPensamento(-1)">←</button>
@@ -400,8 +411,26 @@
 
   const PENSAMENTOS = {
     textos: [
-      "Eu sempre vou ficar e escolher você.",
-      "Eu te ouviria por horas,\nmesmo em silêncio.\nSe algum dia o mundo te pesar, saiba que meu colo,\nmeu coração e meu tempo\nsempre vão estar aqui\npara você!"
+      {
+        texto: "Eu sempre vou ficar e escolher você.",
+        data: "2026-06-10T17:00:00"
+      },
+      {
+        texto: "Quero te fazer tão feliz a ponto de você não conseguir parar de sorrir às vezes. E quero te fazer sentir muito amada, pra você não duvidar de nada nem por um segundo. E conforme vou descobrindo coisas novas sobre você, quero provar o quanto eu te acho incrível. ❤️",
+        data: "2026-06-14T18:38:00"
+      },
+      {
+        texto: "Mesmo nos dias difíceis, lembre-se: sua força, sua dedicação e seu coração fazem de você alguém verdadeiramente incrível.",
+        data: "2026-06-14T18:44:48"
+      },
+      {
+        texto: "Nunca permita que um momento difícil faça você esquecer quem você é.",
+        data: "2026-06-14T18:50:09"
+      },
+      {
+        texto: "Eu te ouviria por horas,\nmesmo em silêncio.\nSe algum dia o mundo te pesar, saiba que meu colo,\nmeu coração e meu tempo\nsempre vão estar aqui\npara você!",
+        data: "2026-06-12T21:00:00"
+      }
     ]
   };
 
@@ -416,7 +445,8 @@
     "Dashdot Maxximal Ashibah - Make It Better Pseudo Video ft. Ashib.mp3",
     "Goo Goo Dolls Iris Official Music Video 4K Remaster.mp3",
     "Chris de burgh - lady in red HQ.mp3",
-    "Radiohead - Fake Plastic Trees.mp3"
+    "Radiohead - Fake Plastic Trees.mp3",
+    "Creed - One Last Breath Official HD Music Video.mp3"
   ];
 
   // =======================================================
@@ -429,7 +459,27 @@
     const choiceBtns  = document.getElementById('choice-btns');
     const pensBox     = document.getElementById('pensamentos-box');
     const pensTexto   = document.getElementById('pensamento-texto');
+    const pensData    = document.getElementById('pensamento-data');
     const pensCounter = document.getElementById('pensamento-counter');
+
+    // Ordena do mais recente para o mais antigo
+    PENSAMENTOS.textos.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+    // Detecta datas duplicadas para decidir se mostra hora
+    const todasDatas = PENSAMENTOS.textos.map(t => new Date(t.data).toDateString());
+    const datasComHora = new Set(todasDatas.filter((d, i) => todasDatas.indexOf(d) !== i));
+
+    function formatarData(dataStr) {
+      const d = new Date(dataStr);
+      const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+      const base = `${d.getDate()} ${meses[d.getMonth()]} ${d.getFullYear()}`;
+      if (datasComHora.has(d.toDateString())) {
+        const h = String(d.getHours()).padStart(2,'0');
+        const m = String(d.getMinutes()).padStart(2,'0');
+        return `${base} · ${h}:${m}`;
+      }
+      return base;
+    }
     const btnPrev     = document.getElementById('btn-prev');
     const btnNext     = document.getElementById('btn-next');
 
@@ -567,14 +617,18 @@
       btnPrev.disabled = pensIndex === 0;
       btnNext.disabled = pensIndex === total - 1;
 
+      const item = PENSAMENTOS.textos[pensIndex];
+
       if (animar) {
         pensTexto.classList.add('saindo');
         setTimeout(() => {
-          pensTexto.textContent = PENSAMENTOS.textos[pensIndex];
+          pensTexto.innerHTML = item.texto.replace(/\n/g, '<br>');
+          pensData.textContent = formatarData(item.data);
           pensTexto.classList.remove('saindo');
         }, 400);
       } else {
-        pensTexto.textContent = PENSAMENTOS.textos[pensIndex];
+        pensTexto.innerHTML = item.texto.replace(/\n/g, '<br>');
+        pensData.textContent = formatarData(item.data);
       }
     }
 
